@@ -8,10 +8,12 @@ printstep "Vérification des paramètres d'entrée"
 init_env
 int_gitlab_api_env
 
-declare -A PROMOTIONS
-PROMOTIONS=(["DEV"]="RECSMA" ["RECSMA"]="INT" ["RECSEP"]="INT" ["INT"]="PREPROD" ["PREPROD"]="PROD") ;
+declare -A PROMOTIONS=(["DEV"]="RECSMA" ["RECSMA"]="INT" ["RECSEP"]="INT" ["INT"]="PREPROD" ["PREPROD"]="PROD")
 SOURCE_BRANCH=`echo "$CI_ENVIRONMENT_NAME" | tr '[:upper:]' '[:lower:]'`
 DEST_BRANCH=`echo "${PROMOTIONS[$CI_ENVIRONMENT_NAME]}" | tr '[:upper:]' '[:lower:]'`
+
+printinfo "SOURCE_BRANCH: $SOURCE_BRANCH"
+printinfo "DEST_BRANCH: $DEST_BRANCH"
 
 if [[ -z $CI_ENVIRONMENT_NAME ]];then
     printerror "La variable CI_ENVIRONMENT_NAME de l'environnement source n'est pas renseignée"
