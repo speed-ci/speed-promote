@@ -20,7 +20,7 @@ if [[ -z $CI_ENVIRONMENT_NAME ]];then
     exit 1
 fi
 
-if [[ -z $DEST_ENV ]];then
+if [[ -z $DEST_BRANCH ]];then
     printerror "L'environnement de destination pour la promotion de $CI_ENVIRONMENT_NAME est inconnu"
     exit 1
 fi
