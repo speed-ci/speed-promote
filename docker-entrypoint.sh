@@ -8,9 +8,9 @@ printstep "Vérification des paramètres d'entrée"
 init_env
 int_gitlab_api_env
 
-declare -A PROMOTIONS=(["DEV"]="RECSMA" ["RECSMA"]="INT" ["RECSEP"]="INT" ["INT"]="PREPROD" ["PREPROD"]="PROD")
-SOURCE_BRANCH=`echo "$CI_ENVIRONMENT_NAME" | tr '[:upper:]' '[:lower:]'`
-DEST_BRANCH=`echo "${PROMOTIONS[$CI_ENVIRONMENT_NAME]}" | tr '[:upper:]' '[:lower:]'`
+declare -A PROMOTIONS=(["master"]="recsma" ["recsma"]="int" ["recsep"]="int" ["int"]="preprod" ["preprod"]="prod")
+SOURCE_BRANCH=`echo "$BRANCH_NAME"`
+DEST_BRANCH=`echo "${PROMOTIONS[$BRANCH_NAME]}"`
 
 printinfo "SOURCE_BRANCH: $SOURCE_BRANCH"
 printinfo "DEST_BRANCH: $DEST_BRANCH"
