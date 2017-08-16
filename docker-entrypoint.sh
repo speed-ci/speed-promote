@@ -11,8 +11,8 @@ int_gitlab_api_env
 printstep "Préparation du projet $PROJECT_NAMESPACE/$PROJECT_NAME"
 declare -A PROMOTIONS
 PROMOTIONS=(["DEV"]="RECSMA" ["RECSMA"]="INT" ["RECSEP"]="INT" ["INT"]="PREPROD" ["PREPROD"]="PROD") ;
-SOURCE_BRANCH=echo $BRANCH_NAME | tr '[:upper:]' '[:lower:]'
-DEST_BRANCH=echo ${PROMOTIONS[$SOURCE_BRANCH]} | tr '[:upper:]' '[:lower:]'
+SOURCE_BRANCH=`echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]'`
+DEST_BRANCH=`echo "${PROMOTIONS[$SOURCE_BRANCH]}" | tr '[:upper:]' '[:lower:]'`
 
 PROJECT_ID=`myCurl --header "PRIVATE-TOKEN: $GITLAB_TOKEN" "$GITLAB_API_URL/projects?search=$PROJECT_NAME" | jq --arg project_namespace "$PROJECT_NAMESPACE" '.[] | select(.namespace.name == "\($project_namespace)") | .id'`
 
