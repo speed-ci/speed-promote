@@ -45,9 +45,9 @@ else
     LAST_NEW_COMMIT=`myCurl --header "PRIVATE-TOKEN: $GITLAB_TOKEN" "$GITLAB_API_URL/projects/$PROJECT_ID/repository/compare?from=$DEST_BRANCH&to=$SOURCE_BRANCH" | jq -r .commit.id`
     if [[ $LAST_NEW_COMMIT != "null" ]]; then
         printinfo "Mise à jour de la branche $DEST_BRANCH avec les derniers commits de $SOURCE_BRANCH"
-        PROMOTION_MR_IID=`myCurl --request POST --header "PRIVATE-TOKEN: $GITLAB_TOKEN" "$GITLAB_API_URL/projects/$PROJECT_ID/merge_requests" -d "source_branch=$SOURCE_BRANCH" -d "target_branch=$DEST_BRANCH" -d "title=chore(promotion): Promote macroservice from $SOURCE_BRANCH branch to $DEST_BRANCH branch" | jq .iid`
+        PROMOTION_MR_IID=`myCurl --request POST --header "PRIVATE-TOKEN: $GITLAB_TOKEN" --header "SUDO: $GITLAB_USER_ID" "$GITLAB_API_URL/projects/$PROJECT_ID/merge_requests" -d "source_branch=$SOURCE_BRANCH" -d "target_branch=$DEST_BRANCH" -d "title=chore(promotion): Promote macroservice from $SOURCE_BRANCH branch to $DEST_BRANCH branch" | jq .iid`
         printinfo "Lien d'accès à la merge request : $GITLAB_URL/$PROJECT_NAMESPACE/$PROJECT_NAME/merge_requests/$PROMOTION_MR_IID"
-        myCurl --request PUT --header "PRIVATE-TOKEN: $GITLAB_TOKEN" "$GITLAB_API_URL/projects/$PROJECT_ID/merge_requests/$PROMOTION_MR_IID/merge" | jq .
+        myCurl --request PUT --header "PRIVATE-TOKEN: $GITLAB_TOKEN" --header "SUDO: $GITLAB_USER_ID" "$GITLAB_API_URL/projects/$PROJECT_ID/merge_requests/$PROMOTION_MR_IID/merge" | jq .
     else
         printinfo "Aucune différence entre les branches $SOURCE_BRANCH et $DEST_BRANCH, promotion inutile"
     fi
