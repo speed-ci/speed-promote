@@ -39,7 +39,7 @@ DEST_BRANCH_FOUND=`myCurl --header "PRIVATE-TOKEN: $GITLAB_TOKEN" "$GITLAB_API_U
 
 if [[ $DEST_BRANCH_FOUND == "null" ]]; then
     printinfo "Création de la branche $DEST_BRANCH manquante sur le projet $PROJECT_NAMESPACE/$PROJECT_NAME"
-    myCurl --request POST --header "PRIVATE-TOKEN: $GITLAB_TOKEN" "$GITLAB_API_URL/projects/$PROJECT_ID/repository/branches" -d "branch=$DEST_BRANCH" -d "ref=$SOURCE_BRANCH" | jq .
+    myCurl --request POST --header "PRIVATE-TOKEN: $GITLAB_TOKEN" --header "SUDO: $GITLAB_USER_ID" "$GITLAB_API_URL/projects/$PROJECT_ID/repository/branches" -d "branch=$DEST_BRANCH" -d "ref=$SOURCE_BRANCH" | jq .
 
 else
     LAST_NEW_COMMIT=`myCurl --header "PRIVATE-TOKEN: $GITLAB_TOKEN" "$GITLAB_API_URL/projects/$PROJECT_ID/repository/compare?from=$DEST_BRANCH&to=$SOURCE_BRANCH" | jq -r .commit.id`
