@@ -8,7 +8,13 @@ printstep "Vérification des paramètres d'entrée"
 init_env
 int_gitlab_api_env
 
-declare -A PROMOTIONS=(["master"]="recsma" ["recsma"]="int" ["recsep"]="int" ["int"]="preprod" ["preprod"]="prod")
+declare -A PROMOTIONS
+if [[ $PROMOTION_RULES  ]]; then
+    while read name value; do
+        PROMOTIONS[$name]=$value
+    done < <(<<<"$PROMOTION_RULES" awk -F= '{print $1,$2}' RS=',|\n')
+fi
+
 SOURCE_BRANCH=`echo "$BRANCH_NAME"`
 DEST_BRANCH=`echo "${PROMOTIONS[$BRANCH_NAME]}"`
 
