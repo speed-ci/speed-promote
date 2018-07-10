@@ -18,8 +18,9 @@ fi
 SOURCE_BRANCH=`echo "$BRANCH_NAME"`
 DEST_BRANCH=`echo "${PROMOTIONS[$BRANCH_NAME]}"`
 
-printinfo "SOURCE_BRANCH: $SOURCE_BRANCH"
-printinfo "DEST_BRANCH: $DEST_BRANCH"
+printinfo "PROMOTION_RULES : $PROMOTION_RULES"
+printinfo "SOURCE_BRANCH   : $SOURCE_BRANCH"
+printinfo "DEST_BRANCH     : $DEST_BRANCH"
 
 if [[ -z $BRANCH_NAME ]];then
     printerror "La variable BRANCH_NAME de l'environnement source n'est pas renseignée"
