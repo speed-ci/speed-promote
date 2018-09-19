@@ -9,6 +9,7 @@ init_env
 int_gitlab_api_env
 
 declare -A PROMOTIONS
+PROMOTION_RULES=${CUSTOM_PROMOTION_RULES:-$PROMOTION_RULES}
 if [[ $PROMOTION_RULES  ]]; then
     while read name value; do
         PROMOTIONS[$name]=$value
